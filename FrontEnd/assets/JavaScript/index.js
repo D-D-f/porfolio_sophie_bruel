@@ -68,6 +68,7 @@ const getData = async (url) => {
       createFiltreElement(data);
 
       allProject.addEventListener("click", () => {
+        gallery.innerHTML = "";
         displayHomeElement(data);
       });
     }
