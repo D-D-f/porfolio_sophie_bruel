@@ -1,6 +1,9 @@
 const filtres = document.querySelector(".filtres");
 const gallery = document.querySelector(".gallery");
 const allProject = document.querySelector("#all");
+const login = document.querySelector("#login");
+const edition = document.querySelector(".edition");
+let inOrOut = false;
 
 // Création des balises figure qui contiennet les images et la légende
 const createFigureElement = (project) => {
@@ -13,27 +16,37 @@ const createFigureElement = (project) => {
   img.src = project.imageUrl;
   figCaption.textContent = project.title;
 };
+// Récupérer toutes les catégories
+const getCategory = async () => {
+  try {
+    const requete = await fetch("http://localhost:5678/api/categories", {
+      fetch: "GET",
+    });
 
-// Création des filtres
-const createFiltreElement = (arrayProject) => {
-  const allCategory = [];
-
-  arrayProject.map((category) => {
-    if (!allCategory.includes(category.category.name)) {
-      allCategory.push(category.category.name);
+    if (!requete.ok) {
+      throw "Un problème est survenu";
+    } else {
+      return await requete.json();
     }
-  });
+  } catch (e) {
+    console.log(e);
+  }
+};
+// Création des filtres dynamiquement
+const createFiltreElement = (arrayProject) => {
+  const allCategory = getCategory();
+  allCategory.then(async (response) => {
+    response.map((category) => {
+      let filtre = document.createElement("li");
+      filtres.append(filtre);
+      filtre.classList.add("filtre");
+      filtre.textContent = category.name;
 
-  allCategory.map((displayFiltre) => {
-    let filtre = document.createElement("li");
-    filtres.append(filtre);
-    filtre.classList.add("filtre");
-    filtre.textContent = displayFiltre;
-
-    filtre.addEventListener("click", () => {
-      let sort = sortCategory(arrayProject, filtre.textContent);
-      gallery.innerHTML = "";
-      displayHomeElement(sort);
+      filtre.addEventListener("click", () => {
+        let sort = sortCategory(arrayProject, filtre.textContent);
+        gallery.innerHTML = "";
+        displayHomeElement(sort);
+      });
     });
   });
 };
@@ -44,7 +57,6 @@ const sortCategory = (arrayProject, categoryFiltre) => {
   });
   return sort;
 };
-
 // Affiche tous les éléments sur la page principal
 const displayHomeElement = (arrayProject) => {
   const element = arrayProject.map((project) => {
@@ -52,7 +64,6 @@ const displayHomeElement = (arrayProject) => {
   });
   return element;
 };
-
 // La requête qui récupère les données depuis le serveur
 const getData = async (url) => {
   try {
@@ -76,5 +87,14 @@ const getData = async (url) => {
     alert(e);
   }
 };
-
 getData("http://localhost:5678/api/works");
+
+// Mode édition
+
+const modeEdition = () => {
+  login.textContent = "logout";
+  filtres.style.display = "none";
+  edition.style.display = "block";
+};
+
+localStorage.getItem("token") ? modeEdition() : (inOrOut = false);
