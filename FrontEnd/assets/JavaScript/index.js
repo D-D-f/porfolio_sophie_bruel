@@ -20,7 +20,7 @@ const createFigureElement = (project) => {
 const getCategory = async () => {
   try {
     const requete = await fetch("http://localhost:5678/api/categories", {
-      fetch: "GET",
+      method: "GET",
     });
 
     if (!requete.ok) {
@@ -97,4 +97,4 @@ const modeEdition = () => {
   edition.style.display = "block";
 };
 
-localStorage.getItem("token") ? modeEdition() : (inOrOut = false);
+// localStorage.getItem("token") ? modeEdition() : (inOrOut = false);
