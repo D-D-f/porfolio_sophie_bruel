@@ -2,8 +2,8 @@ const filtres = document.querySelector(".filtres");
 const gallery = document.querySelector(".gallery");
 const allProject = document.querySelector("#all");
 const login = document.querySelector("#login");
-const edition = document.querySelector(".edition");
-let inOrOut = false;
+const edition = document.querySelectorAll(".modeEdition");
+const modifProject = document.querySelector("#modifAjout");
 
 // Création des balises figure qui contiennet les images et la légende
 const createFigureElement = (project) => {
@@ -65,9 +65,9 @@ const displayHomeElement = (arrayProject) => {
   return element;
 };
 // La requête qui récupère les données depuis le serveur
-const getData = async (url) => {
+const getData = async () => {
   try {
-    const requete = await fetch(url, {
+    const requete = await fetch("http://localhost:5678/api/works", {
       method: "GET",
     });
 
@@ -87,14 +87,28 @@ const getData = async (url) => {
     alert(e);
   }
 };
-getData("http://localhost:5678/api/works");
+getData();
 
-// Mode édition
-
+// Mode connecter
 const modeEdition = () => {
   login.textContent = "logout";
   filtres.style.display = "none";
-  edition.style.display = "block";
+  for (let edit of edition) {
+    edit.classList.remove("editionNone");
+    edit.classList.add("editionBlock");
+  }
+  login.addEventListener("click", () => {
+    localStorage.removeItem("token");
+  });
+};
+// Mode déconnecter
+const modeNotEdition = () => {
+  login.textContent = "login";
+  filtres.style.display = "flex";
+  for (let edit of edition) {
+    edit.classList.remove("editionBlock");
+    edit.classList.add("editionNone");
+  }
 };
 
-// localStorage.getItem("token") ? modeEdition() : (inOrOut = false);
+localStorage.getItem("token") ? modeEdition() : modeNotEdition();

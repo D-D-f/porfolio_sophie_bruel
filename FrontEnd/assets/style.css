@@ -129,11 +129,14 @@ table {
 }
 /** end reset css**/
 body {
-  max-width: 1140px;
-  margin: auto;
   font-family: "Work Sans";
   font-size: 14px;
   background-color: #fffff9;
+}
+
+.container {
+  max-width: 1140px;
+  margin: auto;
 }
 header {
   display: flex;
@@ -178,7 +181,13 @@ nav li {
   font-size: 1.2em;
 }
 
+nav ul li a {
+  text-decoration: none;
+  color: #3d3d3d;
+}
+
 li:hover {
+  cursor: pointer;
   color: #b1663c;
 }
 .filtres {
@@ -284,4 +293,54 @@ footer nav ul {
   display: flex;
   justify-content: flex-end;
   margin: 2em;
+}
+
+.edition {
+  background-color: black;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+.edition button {
+  border: none;
+  background: #ffffff;
+  color: black;
+  border-radius: 60px;
+  padding: 0.5rem 1.5rem;
+  margin-left: 0.5rem;
+}
+
+.edition_designer {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.title {
+  display: flex;
+  justify-content: center;
+}
+
+.title span {
+  cursor: pointer;
+  margin-top: 0.5rem;
+  margin-left: 0.6rem;
+}
+
+#introduction figure figcaption {
+  cursor: pointer;
+  padding-top: 0.6rem;
+  padding-left: 3.6rem;
+}
+
+.modeEdition {
+  display: block;
+}
+
+.editionNone {
+  display: none;
+}
+
+.editionBlock {
+  display: block;
 }
