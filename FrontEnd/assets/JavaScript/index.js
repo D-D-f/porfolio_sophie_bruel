@@ -8,8 +8,8 @@ const modifProject = document.querySelector("#modifAjout");
 const windowModale = document.querySelector(".modale");
 const btnClosemodale = document.querySelector("#close");
 const galleryModale = document.querySelector(".galleryModale");
+const getToken = JSON.parse(localStorage.getItem("token"));
 
-// Création des balises figure qui contiennet les images et la légende
 const createFigureElement = (project) => {
   const figure = document.createElement("figure");
   const img = document.createElement("img");
@@ -20,7 +20,6 @@ const createFigureElement = (project) => {
   img.src = project.imageUrl;
   figCaption.textContent = project.title;
 };
-// Récupérer toutes les catégories
 const getCategory = async () => {
   try {
     const requete = await fetch("http://localhost:5678/api/categories", {
@@ -36,7 +35,6 @@ const getCategory = async () => {
     console.log(e);
   }
 };
-// Création des filtres dynamiquement
 const createFiltreElement = (arrayProject) => {
   const allCategory = getCategory();
   allCategory.then(async (response) => {
@@ -54,22 +52,20 @@ const createFiltreElement = (arrayProject) => {
     });
   });
 };
-// Trier les catégories selon la valeur de categoryFiltre
 const sortCategory = (arrayProject, categoryFiltre) => {
   const sort = arrayProject.filter((category) => {
     return category.category.name === categoryFiltre;
   });
   return sort;
 };
-// Affiche tous les éléments
 const displayElement = (arrayProject) => {
-  const element = arrayProject.map((project) => {
+  const element = arrayProject.map((project, index) => {
     createFigureElement(project);
-    createFigureModale(project.imageUrl);
+    console.log(project.id);
+    createFigureModale(project.imageUrl, project);
   });
   return element;
 };
-// La requête qui récupère les données depuis le serveur
 const getData = async () => {
   try {
     const requete = await fetch("http://localhost:5678/api/works", {
@@ -80,6 +76,7 @@ const getData = async () => {
       throw console.log("Un problème est survenu");
     } else {
       const data = await requete.json();
+      console.log(data);
       displayElement(data);
       createFiltreElement(data);
 
@@ -92,16 +89,11 @@ const getData = async () => {
     alert(e);
   }
 };
-getData();
-
-// Empêche le scroll lorsque la modale est ouverte
 const notScroll = () => {
   modifProject.addEventListener("click", () => {
     document.documentElement.style.overflow = "hidden";
   });
 };
-
-// Mode connecter
 const modeEdition = () => {
   login.textContent = "logout";
   filtres.style.display = "none";
@@ -121,7 +113,6 @@ const modeEdition = () => {
     closeModale();
   });
 };
-// Mode déconnecter
 const modeNotEdition = () => {
   login.textContent = "login";
   filtres.style.display = "flex";
@@ -131,19 +122,37 @@ const modeNotEdition = () => {
   }
 };
 localStorage.getItem("token") ? modeEdition() : modeNotEdition();
-
 const modale = () => {
   body.style.backgroundColor = "rgba(0, 0, 0, 0.3)";
   windowModale.style.display = "block";
 };
-
 const closeModale = () => {
   windowModale.style.display = "none";
   body.style.backgroundColor = "#fffff9";
   document.documentElement.style.overflow = "visible";
 };
-// Création image pour la galerie modale
-const createFigureModale = (srcImg) => {
+const deleteProject = async (project) => {
+  try {
+    const requete = await fetch(
+      `http://localhost:5678/api/works/${project.id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${getToken.token}`,
+        },
+      }
+    );
+
+    if (requete.ok) {
+      const data = await requete.json();
+    } else {
+      throw "Une erreur est survenu";
+    }
+  } catch (e) {
+    alert(e);
+  }
+};
+const createFigureModale = (srcImg, project) => {
   let figure = document.createElement("figure");
   let span = document.createElement("span");
   let img = document.createElement("img");
@@ -156,4 +165,9 @@ const createFigureModale = (srcImg) => {
   img.classList.add("imgModale");
   span.classList.add("deleteProject");
   img.setAttribute("crossorigin", "anonymous");
+
+  span.addEventListener("click", () => {
+    deleteProject(project);
+  });
 };
+getData();
