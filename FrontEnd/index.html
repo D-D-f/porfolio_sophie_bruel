@@ -22,13 +22,48 @@
   </head>
   <body>
     <div class="modale">
-      <span class="btnCloseModale"
-        ><i class="fa-sharp fa-solid fa-xmark" id="close"></i
-      ></span>
+      <span class="btnCloseModale">
+        <i class="fa-sharp fa-solid fa-xmark" id="close"></i>
+      </span>
       <h3>Galerie photo</h3>
       <div class="galleryModale"></div>
       <button class="btnAddProjectModale">Ajouter une photo</button>
       <p class="deleteGallery">Supprimer la galerie</p>
+    </div>
+    <div class="modaleAddProject">
+      <div class="modaleAddProject_icon">
+        <span class="back"><i class="fa-solid fa-arrow-left"></i></span>
+        <span class="btnCloseAddModale">
+          <i class="fa-sharp fa-solid fa-xmark" id="close"></i>
+        </span>
+      </div>
+      <h3>Ajout photo</h3>
+      <form action="POST" class="addProject" enctype="multipart/form-data">
+        <div class="bloc-picture">
+          <span class="icone-picture">
+            <i class="fa-regular fa-image"></i>
+          </span>
+          <img id="newImg" src="" alt="" />
+          <div class="btnAddFile">
+            <button type="submit">+ Ajouter une photo</button>
+            <input type="file" name="image" id="image" />
+          </div>
+          <span class="extension">jpg, png : 4mo max</span>
+        </div>
+        <div class="inputAddProject">
+          <label for="title">Titre</label>
+          <p>
+            <input type="text" name="title" id="title" />
+          </p>
+
+          <label for="category">Catégorie</label>
+          <p>
+            <select name="category" id="category"></select>
+          </p>
+        </div>
+
+        <button class="bouton_add_picture btnDisabled" disabled>Valider</button>
+      </form>
     </div>
     <div class="edition modeEdition">
       <span> <i class="fa-regular fa-pen-to-square"></i> Mode édition</span>
@@ -122,6 +157,6 @@
         </ul>
       </nav>
     </footer>
+    <script src="./assets/JavaScript/index.js"></script>
   </body>
-  <script src="./assets/JavaScript/index.js"></script>
 </html>

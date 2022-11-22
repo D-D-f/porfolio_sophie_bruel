@@ -8,6 +8,16 @@ const modifProject = document.querySelector("#modifAjout");
 const windowModale = document.querySelector(".modale");
 const btnClosemodale = document.querySelector("#close");
 const galleryModale = document.querySelector(".galleryModale");
+const modaleProject = document.querySelector(".modaleAddProject");
+const btnAddProjectModale = document.querySelector(".btnAddProjectModale");
+const btnCloseSecondModale = document.querySelector(".btnCloseAddModale");
+const backWindow = document.querySelector(".back");
+const formAddProject = document.querySelector(".addProject");
+const inputFile = document.querySelector("#image");
+const getImg = document.querySelector("#newImg");
+const inputTitle = document.querySelector("#title");
+const selectCategory = document.querySelector("#category");
+const btnSecondModale = document.querySelector(".bouton_add_picture");
 const getToken = JSON.parse(localStorage.getItem("token"));
 
 const createFigureElement = (project) => {
@@ -29,7 +39,9 @@ const getCategory = async () => {
     if (!requete.ok) {
       throw "Un problème est survenu";
     } else {
-      return await requete.json();
+      const data = await requete.json();
+      displayCategory(data);
+      return data;
     }
   } catch (e) {
     console.log(e);
@@ -59,9 +71,8 @@ const sortCategory = (arrayProject, categoryFiltre) => {
   return sort;
 };
 const displayElement = (arrayProject) => {
-  const element = arrayProject.map((project, index) => {
+  const element = arrayProject.map((project) => {
     createFigureElement(project);
-    console.log(project.id);
     createFigureModale(project.imageUrl, project);
   });
   return element;
@@ -76,10 +87,10 @@ const getData = async () => {
       throw console.log("Un problème est survenu");
     } else {
       const data = await requete.json();
-      console.log(data);
       displayElement(data);
       createFiltreElement(data);
-
+      getId(data);
+      console.log(data);
       allProject.addEventListener("click", () => {
         gallery.innerHTML = "";
         displayElement(data);
@@ -127,6 +138,7 @@ const modale = () => {
   windowModale.style.display = "block";
 };
 const closeModale = () => {
+  modaleProject.style.display = "none";
   windowModale.style.display = "none";
   body.style.backgroundColor = "#fffff9";
   document.documentElement.style.overflow = "visible";
@@ -165,9 +177,111 @@ const createFigureModale = (srcImg, project) => {
   img.classList.add("imgModale");
   span.classList.add("deleteProject");
   img.setAttribute("crossorigin", "anonymous");
+  img.style.height = "200px";
 
   span.addEventListener("click", () => {
     deleteProject(project);
   });
+
+  btnAddProjectModale.addEventListener("click", () => {
+    windowModale.style.display = "none";
+    modaleProject.style.display = "block";
+  });
 };
+const setNewProject = async (data) => {
+  try {
+    const requete = await fetch("http://localhost:5678/api/works", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${getToken.token}`,
+      },
+      body: data,
+    });
+    const content = await requete.json();
+    console.log(content);
+    alert("bravo");
+  } catch (e) {
+    console.log(e);
+  }
+};
+const eventModaleAddProject = () => {
+  btnCloseSecondModale.addEventListener("click", () => {
+    closeModale();
+  });
+  backWindow.addEventListener("click", () => {
+    modaleProject.style.display = "none";
+    windowModale.style.display = "block";
+  });
+  formAddProject.addEventListener("input", () => {
+    if (inputFile.value !== "" && getImg.src !== "") {
+      btnSecondModale.disabled = false;
+      btnSecondModale.classList.remove("btnDisabled");
+      displayGetImg();
+    }
+    if (inputTitle.value === "" && getImg.src !== "") {
+      btnSecondModale.disabled = true;
+      btnSecondModale.classList.add("btnDisabled");
+    }
+  });
+  formAddProject.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const titre = document.querySelector("#title").value;
+    const image = document.querySelector("#image").files[0];
+    const categoryId = selectCategory.selectedIndex + 1;
+
+    const formData = new FormData();
+    formData.append("image", image);
+    formData.append("title", titre);
+    formData.append("category", categoryId);
+
+    setNewProject(formData);
+  });
+};
+const displayCategory = (category) => {
+  const categ = category.map((catego) => {
+    return createElemCategory(catego);
+  });
+  return categ;
+};
+const displayGetImg = () => {
+  const divIcon = document.querySelector(".icone-picture");
+  const inputFile = document.querySelector("#image").files[0];
+  const spanExtension = document.querySelector(".extension");
+  const btnAddFile = document.querySelector(".btnAddFile");
+  const reader = new FileReader();
+
+  reader.addEventListener(
+    "load",
+    () => {
+      newImg.src = reader.result;
+    },
+    false
+  );
+
+  if (inputFile) {
+    reader.readAsDataURL(inputFile);
+  }
+
+  divIcon.style.display = "none";
+  newImg.style.display = "block";
+  spanExtension.style.display = "none";
+  btnAddFile.style.display = "none";
+};
+const createElemCategory = (text) => {
+  let option = document.createElement("option");
+  selectCategory.append(option);
+  option.value = text.id;
+  option.textContent = text.name;
+};
+const getId = (data) => {
+  let id = 0;
+  for (let maxId of data) {
+    if (maxId.id > id) {
+      id = maxId.id;
+    }
+  }
+  localStorage.setItem("id", id);
+};
+
+eventModaleAddProject();
 getData();

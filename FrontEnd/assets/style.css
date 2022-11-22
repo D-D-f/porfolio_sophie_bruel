@@ -222,6 +222,10 @@ li:hover {
   width: 80%;
 }
 
+figure img {
+  height: 480px;
+}
+
 #introduction article {
   flex: 1;
 }
@@ -345,7 +349,8 @@ footer nav ul {
   display: block;
 }
 
-.modale {
+.modale,
+.modaleAddProject {
   display: none;
   position: absolute;
   z-index: 1;
@@ -358,12 +363,14 @@ footer nav ul {
   padding: 3rem;
 }
 
-.btnCloseModale {
+.btnCloseModale,
+.btnCloseAddModale {
   display: block;
   text-align: right;
 }
 
-.btnCloseModale i {
+.btnCloseModale i,
+.btnCloseAddModale i {
   cursor: pointer;
 }
 
@@ -420,4 +427,131 @@ figure .imgModale {
   margin-top: 2rem;
   color: red;
   cursor: pointer;
+}
+
+.modaleAddProject_icon {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modaleAddProject h3 {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 2em;
+}
+
+.bloc-picture {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 200px;
+  background-color: #e8f1f7;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 3px;
+}
+
+.bloc-picture i {
+  font-size: 4rem;
+  color: #b9c5cc;
+}
+
+.btnAddFile button {
+  width: 200px;
+  background: #cbd6dc;
+  border-radius: 50px;
+  border: none;
+  padding: 1rem;
+  color: #306685;
+  font-weight: 500;
+}
+
+.btnAddFile {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+}
+.btnAddFile input[type="file"] {
+  left: 0;
+  top: 0;
+  opacity: 0;
+  position: absolute;
+  font-size: 90px;
+}
+
+#newImg {
+  display: none;
+  width: 200px;
+  height: 200px;
+}
+
+.inputAddProject {
+  border-bottom: 1px solid #b3b3b3;
+  margin-bottom: 2rem;
+}
+
+.inputAddProject input {
+  border: none;
+  background: #ffffff;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+  width: 100%;
+  height: 3rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.inputAddProject select {
+  width: 100%;
+  height: 3rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  border: none;
+  background: #ffffff;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+.inputAddProject label,
+.inputAddProject select {
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+
+.bouton_add_picture {
+  display: block;
+  margin: auto;
+  background: #1d6154;
+  border-radius: 60px;
+  border: none;
+  padding-left: 5rem;
+  padding-right: 5rem;
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.back {
+  cursor: pointer;
+}
+
+.btnDisabled {
+  display: block;
+  margin: auto;
+  background-color: #a7a7a7;
+  cursor: none;
+}
+
+footer {
+  width: 100%;
+  background-color: #fefffe;
+}
+
+.error {
+  text-align: center;
+  display: none;
+  color: red;
 }
