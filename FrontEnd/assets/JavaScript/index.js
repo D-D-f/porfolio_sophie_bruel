@@ -198,8 +198,7 @@ const setNewProject = async (data) => {
       body: data,
     });
     const content = await requete.json();
-    console.log(content);
-    alert("bravo");
+    alert("Votre nouveau projet est bien ajouter");
   } catch (e) {
     console.log(e);
   }
@@ -234,7 +233,9 @@ const eventModaleAddProject = () => {
     formData.append("title", titre);
     formData.append("category", categoryId);
 
-    setNewProject(formData);
+    if (image.size <= 4000) {
+      setNewProject(formData);
+    }
   });
 };
 const displayCategory = (category) => {
