@@ -555,3 +555,10 @@ footer {
   display: none;
   color: red;
 }
+
+.imgError {
+  color: red;
+  display: none;
+  margin-bottom: 2rem;
+  text-align: center;
+}

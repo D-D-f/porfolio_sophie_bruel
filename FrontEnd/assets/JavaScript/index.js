@@ -144,25 +144,12 @@ const closeModale = () => {
   document.documentElement.style.overflow = "visible";
 };
 const deleteProject = async (project) => {
-  try {
-    const requete = await fetch(
-      `http://localhost:5678/api/works/${project.id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${getToken.token}`,
-        },
-      }
-    );
-
-    if (requete.ok) {
-      const data = await requete.json();
-    } else {
-      throw "Une erreur est survenu";
-    }
-  } catch (e) {
-    alert(e);
-  }
+  const requete = await fetch(`http://localhost:5678/api/works/${project.id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${getToken.token}`,
+    },
+  });
 };
 const createFigureModale = (srcImg, project) => {
   let figure = document.createElement("figure");
@@ -232,9 +219,19 @@ const eventModaleAddProject = () => {
     formData.append("image", image);
     formData.append("title", titre);
     formData.append("category", categoryId);
-
-    if (image.size <= 4000) {
+    console.log(image.size);
+    if (image.size <= 400000) {
       setNewProject(formData);
+    } else {
+      const p = document.querySelector(".imgError");
+      const divIcon = document.querySelector(".icone-picture");
+      const spanExtension = document.querySelector(".extension");
+      const btnAddFile = document.querySelector(".btnAddFile");
+      p.style.display = "block";
+      divIcon.style.display = "block";
+      newImg.style.display = "none";
+      spanExtension.style.display = "block";
+      btnAddFile.style.display = "block";
     }
   });
 };
