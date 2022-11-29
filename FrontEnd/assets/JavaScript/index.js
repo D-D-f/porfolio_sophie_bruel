@@ -88,7 +88,7 @@ const getData = async () => {
       throw console.log("Un problème est survenu");
     } else {
       const data = await requete.json();
-      console.log(data);
+      galleryModale.innerHTML = "";
       displayElement(data);
       createFiltreElement(data);
       getId(data);
@@ -182,7 +182,8 @@ const setNewProject = async (data) => {
       body: data,
     });
     if (requete.status === 201) {
-      console.log(data);
+      gallery.innerHTML = "";
+      getData();
     } else {
       throw "Un problème est survenu";
     }
@@ -290,7 +291,6 @@ btnAddProjectModale.addEventListener("click", () => {
 
 if (localStorage.getItem("idDelete")) {
   let arrayDelete = JSON.parse(localStorage.getItem("idDelete"));
-  console.log(arrayDelete);
   for (let id of arrayDelete) {
     deleteProject(id);
   }
