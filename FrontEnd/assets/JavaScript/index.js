@@ -19,7 +19,7 @@ const inputTitle = document.querySelector("#title");
 const selectCategory = document.querySelector("#category");
 const btnSecondModale = document.querySelector(".bouton_add_picture");
 const getToken = JSON.parse(localStorage.getItem("token"));
-
+let projectId = [];
 const createFigureElement = (project) => {
   const figure = document.createElement("figure");
   const img = document.createElement("img");
@@ -139,16 +139,13 @@ const closeModale = () => {
   body.style.backgroundColor = "#fffff9";
   document.documentElement.style.overflow = "visible";
 };
-const deleteProject = async () => {
-  await fetch(
-    `http://localhost:5678/api/works/${localStorage.getItem("idDelete")}`,
-    {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${getToken.token}`,
-      },
-    }
-  );
+const deleteProject = async (id) => {
+  await fetch(`http://localhost:5678/api/works/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${getToken.token}`,
+    },
+  });
 };
 const createFigureModale = (srcImg, project, index, arrayProject) => {
   let figure = document.createElement("figure");
@@ -166,16 +163,12 @@ const createFigureModale = (srcImg, project, index, arrayProject) => {
   img.style.height = "200px";
 
   span.addEventListener("click", () => {
-    localStorage.setItem("idDelete", project.id);
+    projectId.push(project.id);
+    localStorage.setItem("idDelete", JSON.stringify(projectId));
     arrayProject.splice(index - 1, 1);
     galleryModale.innerHTML = "";
     gallery.innerHTML = "";
     displayElement(arrayProject);
-  });
-
-  btnAddProjectModale.addEventListener("click", () => {
-    windowModale.style.display = "none";
-    modaleProject.style.display = "block";
   });
 };
 const setNewProject = async (data) => {
@@ -265,7 +258,7 @@ formAddProject.addEventListener("submit", (e) => {
   formData.append("image", image);
   formData.append("title", titre);
   formData.append("category", categoryId);
-  if (image.size <= 400000) {
+  if (image.size <= 4000000) {
     setNewProject(formData);
   } else {
     const p = document.querySelector(".imgError");
@@ -278,6 +271,8 @@ formAddProject.addEventListener("submit", (e) => {
     spanExtension.style.display = "block";
     btnAddFile.style.display = "block";
   }
+  modaleProject.style.display = "none";
+  body.style.backgroundColor = "";
 });
 
 btnCloseSecondModale.addEventListener("click", () => {
@@ -288,11 +283,18 @@ backWindow.addEventListener("click", () => {
   windowModale.style.display = "block";
 });
 
+btnAddProjectModale.addEventListener("click", () => {
+  windowModale.style.display = "none";
+  modaleProject.style.display = "block";
+});
+
 if (localStorage.getItem("idDelete")) {
-  deleteProject();
+  let arrayDelete = JSON.parse(localStorage.getItem("idDelete"));
+  console.log(arrayDelete);
+  for (let id of arrayDelete) {
+    deleteProject(id);
+  }
   localStorage.removeItem("idDelete");
 }
 
 getData();
-if (localStorage.getItem("form")) {
-}
