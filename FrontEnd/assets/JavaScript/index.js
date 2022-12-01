@@ -73,9 +73,9 @@ const sortCategory = (arrayProject, categoryFiltre) => {
 const displayElement = (arrayProject) => {
   let index = 0;
   for (let project of arrayProject) {
-    index++;
     createFigureElement(project);
     createFigureModale(project.imageUrl, project, index, arrayProject);
+    index++;
   }
 };
 const getData = async () => {
@@ -161,11 +161,19 @@ const createFigureModale = (srcImg, project, index, arrayProject) => {
   span.classList.add("deleteProject");
   img.setAttribute("crossorigin", "anonymous");
   img.style.height = "200px";
+  let zoom = document.createElement('span');
+  figure.append(zoom);
+  zoom.innerHTML = '<i class="fa-solid fa-arrows-up-down-left-right"></i>'
+  zoom.classList.add('figureZoom')
+
+  if(index > 0) {
+    zoom.style.display = "none"
+  }
 
   span.addEventListener("click", () => {
     projectId.push(project.id);
     localStorage.setItem("idDelete", JSON.stringify(projectId));
-    arrayProject.splice(index - 1, 1);
+    arrayProject.splice(index , 1);
     galleryModale.innerHTML = "";
     gallery.innerHTML = "";
     displayElement(arrayProject);
@@ -221,10 +229,12 @@ const displayGetImg = () => {
   btnAddFile.style.display = "none";
 };
 const createElemCategory = (text) => {
-  let option = document.createElement("option");
-  selectCategory.append(option);
-  option.value = text.id;
-  option.textContent = text.name;
+  if(selectCategory.childElementCount < 3) {
+    let option = document.createElement("option");
+    selectCategory.append(option);
+    option.value = text.id;
+    option.textContent = text.name;
+  }
 };
 const getId = (data) => {
   let id = 0;

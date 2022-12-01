@@ -363,6 +363,18 @@ footer nav ul {
   padding: 3rem;
 }
 
+.figureZoom {
+  position: absolute;
+  background-color: black;
+  padding: 0.3rem;
+  top: 0.4rem;
+  right: 2rem;
+}
+
+.figureZoom i {
+  color: white;
+}
+
 .btnCloseModale,
 .btnCloseAddModale {
   display: block;
