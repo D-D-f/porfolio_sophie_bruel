@@ -128,7 +128,13 @@ table {
   border-spacing: 0;
 }
 /** end reset css**/
+html {
+  height: 100%;
+}
 body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   font-family: "Work Sans";
   font-size: 14px;
   background-color: #fffff9;
@@ -296,7 +302,7 @@ input[type="submit"] {
 footer nav ul {
   display: flex;
   justify-content: flex-end;
-  margin: 2em;
+  padding: 2em;
 }
 
 .edition {
@@ -559,7 +565,7 @@ figure .imgModale {
 
 footer {
   width: 100%;
-  background-color: #fefffe;
+  background-color: white;
 }
 
 .error {
