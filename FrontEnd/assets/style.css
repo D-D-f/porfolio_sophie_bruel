@@ -192,6 +192,10 @@ nav ul li a {
   color: #3d3d3d;
 }
 
+.imgSophie {
+  object-fit: contain;
+}
+
 li:hover {
   cursor: pointer;
   color: #b1663c;
